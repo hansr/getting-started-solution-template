@@ -34,6 +34,7 @@ Following sections are optional and their order is not enforced. If not specifie
 Section name | Format | Example                                            | Description
 -------------|--------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 options      | object | [See in the options section](#options-section)     | Template general settings.
+env_schema   | object | [See in the options section](#env-schema-section)  | Environment schema settings.
 assets       | object | [See in the assets section](#assets-section)       | Target source files of the front-end Web application.
 endpoints    | object | [See in the endpoints section](#endpoints-section) | Target source files of the webservice back-end endpoints.
 modules      | object | [See in the modules section](#modules-section)     | Target reusable module source files.
@@ -90,6 +91,21 @@ safeConfigs   | string[]              |                      | Indicates which s
 abort_threshold | positive integer    | 4                    | Number of starting failed solution deployments before aborting a release. (If the first 4 solutions fail to deploy: abort)
 abort_ratio   | positive number       | 0.5                  | Ratio of failed solution deployments to cancel the release, starting from abort_threshold * 2. (With 10 solutions successfully deployed, if 6 solutions failed: abort.)
 
+
+#### Environment Schema section
+
+You can define `env_schema` for your template, they will be used as global enviroment variables.
+
+_Note:_ Only string type is supported.
+
+```yaml
+env_schema:
+  description: my custom description
+  loglevel:
+    type: string
+    description: a loglevel
+    default: warn
+```
 
 #### Assets section
 
