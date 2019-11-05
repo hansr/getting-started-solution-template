@@ -92,7 +92,7 @@ abort_threshold | positive integer    | 4                    | Number of startin
 abort_ratio   | positive number       | 0.5                  | Ratio of failed solution deployments to cancel the release, starting from abort_threshold * 2. (With 10 solutions successfully deployed, if 6 solutions failed: abort.)
 
 
-#### Environment Schema section
+#### Env Schema section
 
 You can define `env_schema` for your template, they will be used as global enviroment variables.
 
