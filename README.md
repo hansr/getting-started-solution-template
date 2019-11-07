@@ -94,7 +94,7 @@ abort_ratio   | positive number       | 0.5                  | Ratio of failed s
 
 #### Env Schema section
 
-You can define `env_schema` for your template, they will be used as global enviroment variables.
+You can define `env_schema` as a JSONSchema for the template environment variables accessed through `os.getenv("loglevel")`. Defined settings will then be available and validated on Murano solution settings page.
 
 _Note:_ Only string type is supported.
 
@@ -105,6 +105,7 @@ env_schema:
     type: string
     description: a loglevel
     default: warn
+    enum: [debug, info, warn, error]
 ```
 
 #### Assets section
