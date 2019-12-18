@@ -14,36 +14,46 @@ local cloud2murano = require("c2c.cloud2murano")
 -- See all operations available in http://docs.exosite.com/reference/services/device2
 
 function murano2cloud.addIdentity(data)
-  local result = murano.services[murano2cloud.alias].addIdentity({ identity = data.identity })
-  if result and result.error then return result end
+  if "Dummycloudservice" ~= murano2cloud.alias then --if no actual cloud service, ignore
+    local result = murano.services[murano2cloud.alias].addIdentity({ identity = data.identity })
+    if result and result.error then return result end
+  end
   return data
 end
 
 function murano2cloud.removeIdentity(data)
-  local result = murano.services[murano2cloud.alias].removeIdentity({ identity = data.identity })
-  if result and result.error then return result end
+  if "Dummycloudservice" ~= murano2cloud.alias then --if no actual cloud service, ignore
+    local result = murano.services[murano2cloud.alias].removeIdentity({ identity = data.identity })
+    if result and result.error then return result end
+  end
   return data
 end
 
 function murano2cloud.setIdentityState(data)
-  local remoteData = transform.data_out(data) -- template user customized data transforms
-  local result = murano.services[murano2cloud.alias].setIdentitystate({ identity = data.identity, data = to_json(remoteData) })
-  if result and result.error then return result end
+  if "Dummycloudservice" ~= murano2cloud.alias then --if no actual cloud service, ignore
+    local remoteData = transform.data_out(data) -- template user customized data transforms
+    local result = murano.services[murano2cloud.alias].setIdentitystate({ identity = data.identity, data = to_json(remoteData) })
+    if result and result.error then return result end
+  end
   return data
 end
 
 function murano2cloud.listIdentities(data)
-  local result = murano2cloud.syncAll({notrigger = true}) -- see below
-  if result and result.error then return result end
+  if "Dummycloudservice" ~= murano2cloud.alias then --if no actual cloud service, ignore
+    local result = murano2cloud.syncAll({notrigger = true}) -- see below
+    if result and result.error then return result end
+  end
   return data
 end
 
 -- Fetch and update 1 device, for lazy update
 function murano2cloud.getIdentityState(data)
-  local result = murano.services[murano2cloud.alias].getIdentityState({ identity = data.identity })
-  if result then
-    if result.error then return result end
-    cloud2murano.data_in(data.identity, result, {notrigger = true})
+  if "Dummycloudservice" ~= murano2cloud.alias then --if no actual cloud service, ignore
+    local result = murano.services[murano2cloud.alias].getIdentityState({ identity = data.identity })
+    if result then
+      if result.error then return result end
+      cloud2murano.data_in(data.identity, result, {notrigger = true})
+    end
   end
   return data
 end
@@ -53,12 +63,13 @@ end
 
 -- Function for recurrent pool action (not matching Device2 operations)
 function murano2cloud.syncAll(options)
-  local result = murano.services[murano2cloud.alias].sync()
-  if result.error then
-    log.error(result.error)
-    return result
+  if "Dummycloudservice" ~= murano2cloud.alias then --if no actual cloud service, ignore
+    local result = murano.services[murano2cloud.alias].sync()
+    if result.error then
+      log.error(result.error)
+      return result
+    end
   end
-
   return cloud2murano.callback(data, options)
 end
 
